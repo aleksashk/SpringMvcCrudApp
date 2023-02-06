@@ -54,8 +54,8 @@ public class PersonDAO {
                 people.add(person);
             }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return people;
@@ -67,19 +67,14 @@ public class PersonDAO {
     }
 
     public void save(Person person) {
-//        person.setId(++PEOPLE_COUNT);
-//        people.add(person);
-
         try {
             Statement statement = connection.createStatement();
             String SQL = "INSERT INTO Person VALUES(" + 1 + ",'" + person.getName() +
                     "'," + person.getAge() + ",'" + person.getEmail() + "')";
-
             statement.executeUpdate(SQL);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
     }
 
     public void update(int id, Person updatedPerson) {
