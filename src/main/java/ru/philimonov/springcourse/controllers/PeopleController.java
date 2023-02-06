@@ -44,11 +44,12 @@ public class PeopleController {
         return "people/new";
     }
 
-    @PostMapping
-    public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+    @PostMapping()
+    public String create(@ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
             return "people/new";
-        }
+
         personDAO.save(person);
         return "redirect:/people";
     }
@@ -60,10 +61,11 @@ public class PeopleController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult, @PathVariable("id") int id) {
-        if (bindingResult.hasErrors()) {
+    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
+                         @PathVariable("id") int id) {
+        if (bindingResult.hasErrors())
             return "people/edit";
-        }
+
         personDAO.update(id, person);
         return "redirect:/people";
     }
@@ -73,5 +75,4 @@ public class PeopleController {
         personDAO.delete(id);
         return "redirect:/people";
     }
-
 }
