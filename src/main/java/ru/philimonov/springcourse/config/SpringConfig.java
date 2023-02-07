@@ -17,7 +17,6 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 import javax.sql.DataSource;
-import java.util.Objects;
 
 /**
  * @author Philimonov Aleksandr
@@ -64,10 +63,10 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Objects.requireNonNull(environment.getRequiredProperty("driver")));
-        dataSource.setUrl(environment.getRequiredProperty("url"));
-        dataSource.setUsername(environment.getRequiredProperty("username"));
-        dataSource.setPassword(environment.getRequiredProperty("password"));
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/first_db");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("password");
         return dataSource;
     }
 
