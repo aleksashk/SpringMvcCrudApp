@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PersonDAO {
@@ -29,6 +30,10 @@ public class PersonDAO {
         return jdbcTemplate.query("select * from Person where id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
     }
 
+    public Optional<Person> show(String email) {
+        return jdbcTemplate.query("select * from Person where email = ?", new Object[]{email}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
+    }
+
     public void save(Person person) {
         jdbcTemplate.update("INSERT INTO person(name, age, email) VALUES (?, ?, ?)", person.getName(), person.getAge(), person.getEmail());
     }
@@ -43,17 +48,17 @@ public class PersonDAO {
 
     public void testMultipleUpdate() {
         List<Person> people = create1000People();
-        long before=System.currentTimeMillis();
+        long before = System.currentTimeMillis();
         for (Person person : people) {
             jdbcTemplate.update("insert into person values (?, ?, ?, ?)", person.getId(), person.getName(), person.getAge(), person.getEmail());
         }
-        long after=System.currentTimeMillis();
+        long after = System.currentTimeMillis();
         System.out.println("Time: " + (after - before));
     }
 
-    public void testBatchUpdate(){
-        List<Person> people=create1000People();
-        long before=System.currentTimeMillis();
+    public void testBatchUpdate() {
+        List<Person> people = create1000People();
+        long before = System.currentTimeMillis();
         jdbcTemplate.batchUpdate("insert into person values (?, ?, ?, ?)", new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
@@ -68,7 +73,7 @@ public class PersonDAO {
                 return 0;
             }
         });
-        long after=System.currentTimeMillis();
+        long after = System.currentTimeMillis();
         System.out.println("Time butchUpdate: " + (after - before));
     }
 
